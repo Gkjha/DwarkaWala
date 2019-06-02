@@ -29,19 +29,18 @@ public class MerchantData {
     public MerchantData() {
     }
 
-    public MerchantData(String merchantName, String email, String phoneNumber, String shopPic, String latitude, String longitude,
-                        String shopAddress, String shopName) {
-        this.merchantName = merchantName;
-        this.email = email;
+    public MerchantData(String id, String phoneNumber, String shopPic, String latitude, String longitude,
+                        String shopAddress, String shopName, String tag, String location) {
+        this.id = id;
         this.phoneNumber = phoneNumber;
         this.shopPic = shopPic;
         this.latitude = latitude;
         this.longitude = longitude;
         this.shopAddress = shopAddress;
         this.shopName = shopName;
-
+        this.tag = tag;
+        this.location = location;
     }
-
 
     public MerchantData(String id, String merchantName, String email, String phoneNumber, String shopPic,
                         String latitude, String longitude, String shopAddress, String shopName, String tag, String location) {

@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -73,6 +74,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import Models.AccountData;
 import Models.MerchantData;
@@ -113,7 +116,6 @@ public class CompleteMerchant extends AppCompatActivity {
     private String imageFilePath;
     private Uri custom, imageUri;
     private CompressImageTask compressImageTask;
-    private CreateNewUserTask createNewUserTask;
     private FusedLocationProviderClient locationProviderClient;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -157,7 +159,6 @@ public class CompleteMerchant extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Merchants");
         database = FirebaseDatabase.getInstance();
         compressImageTask = new CompressImageTask();
-        createNewUserTask = new CreateNewUserTask();
         progressDialog = new Dialog(this);
         progressDialog.setContentView(R.layout.progress_dialog);
         progressDialog.setCancelable(false);
@@ -237,13 +238,14 @@ public class CompleteMerchant extends AppCompatActivity {
                                             Geocoder geo = new Geocoder(CompleteMerchant.this, Locale.getDefault());
                                             try {
                                                 addresses = geo.getFromLocation(latitude,longitude, 1);
+
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
                                         }
 
                                         progressDialog.show();
-                                        createNewUserTask.execute();
+                                        CreateNewMerchant();
 
                                     }
                                 });
@@ -531,105 +533,93 @@ public class CompleteMerchant extends AppCompatActivity {
         }
     }
 
-    public class CreateNewUserTask extends AsyncTask {
 
 
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            if (custom!=null){
-
-                final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + ".JPG");
-                final String uploadId = databaseReference.push().getKey();
+    public void CreateNewMerchant(){
 
 
-                if (addresses.isEmpty()) {
-                    Log.d(TAG, "Waiting for Location");
+        if (custom!=null  | !addresses.isEmpty()){
 
-                    Geocoder geo = new Geocoder(CompleteMerchant.this, Locale.getDefault());
-                    try {
-                        addresses = geo.getFromLocation(latitude,longitude, 1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    if (addresses.size() > 0) {
-
-                    }
-                }
-
-                fileReference.putFile(custom)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + ".JPG");
+            final String uploadId = databaseReference.push().getKey();
 
 
-                                        MerchantData merchantData = new MerchantData(name.getText().toString(),email.getText().toString(),
-                                                phoneNumber,String.valueOf(uri),String.valueOf(latitude),
-                                                String.valueOf(longitude),shopAddress.getText().toString(),shopName.getText().toString());
+            fileReference.putFile(custom)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                        databaseReference.child(uploadId).setValue(merchantData);
+                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+                                    Random rand = new Random();
+                                    int merchantId = rand.nextInt(999);
+                                    String merchantTag = "Food & Beverages";
+
+                                    MerchantData merchantData = new MerchantData(String.valueOf(merchantId),name.getText().toString(),email.getText().toString(),
+                                            phoneNumber,String.valueOf(uri),String.valueOf(latitude),
+                                            String.valueOf(longitude),shopAddress.getText().toString(),shopName.getText().toString(),merchantTag,addresses.get(0).getSubLocality());
+
+                                    databaseReference.child(uploadId).setValue(merchantData);
+
+                                    Gson gson = new Gson();
+                                    String accountJson = gson.toJson(merchantData);
+                                    editor.putString(MERCHANT_DATA, accountJson);
+                                    editor.apply();
+                                    editor.putInt(PROGRESS,1);
+                                    editor.apply();
 
 
-                                        Gson gson = new Gson();
-                                        String accountJson = gson.toJson(merchantData);
-                                        editor.putString(MERCHANT_DATA, accountJson);
-                                        editor.apply();
-                                        editor.putInt(PROGRESS,1);
-                                        editor.apply();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
 
-                                    }
-                                });
+                                            progressDialog.dismiss();
+
+                                            Intent intent = new Intent(CompleteMerchant.this,MainActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                        }
+                                    },1500);
 
 
 
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-
-                                Log.d(TAG,"FailedUpload:" + e.getLocalizedMessage());
-
-                            }
-                        })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                                double progress = (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                                //progressBar.setProgress((int) progress);
-
-                            }
-                        });
-
-            }
-            else if (custom == null){
-                Log.d(TAG,"Image Url is null");
-            } else {
-                Log.d(TAG,"No File Selected");
-            }
+                                }
+                            });
 
 
-            return COMPLETED;
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            progressDialog.dismiss();
+                            Log.d(TAG,"FailedUpload:" + e.getLocalizedMessage());
+
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            double progress = (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                            //progressBar.setProgress((int) progress);
+
+                        }
+                    });
+
         }
-
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-
+        else if (custom == null){
             progressDialog.dismiss();
-
-            Intent intent = new Intent(CompleteMerchant.this,MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            Log.d(TAG,"Image Url is null");
+        } else {
+            progressDialog.dismiss();
+            Log.d(TAG,"No File Selected");
         }
+
     }
 
 

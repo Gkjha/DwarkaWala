@@ -60,7 +60,7 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView shopName, ShopTag;
         CircularImageView shopImage;
@@ -70,12 +70,27 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
             shopImage  = (CircularImageView) itemView.findViewById(R.id.shopImageID);
             shopName  =itemView.findViewById(R.id.shopNameID);
             ShopTag = itemView.findViewById(R.id.offersID);
             parentLayout = itemView.findViewById(R.id.parentLayout);
             pointAddress = itemView.findViewById(R.id.shopPointAddress);
     }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, ShopActivity.class);
+            intent.putExtra("id", mMerchants.get(getAdapterPosition()).getId());
+            intent.putExtra("shop_image", mMerchants.get(getAdapterPosition()).getShopPic());
+            intent.putExtra("shop_name", mMerchants.get(getAdapterPosition()).getShopName());
+            intent.putExtra("shop_address", mMerchants.get(getAdapterPosition()).getShopAddress());
+            intent.putExtra("shopMobileNumber", mMerchants.get(getAdapterPosition()).phoneNumber);
+            intent.putExtra("shopLat",mMerchants.get(getAdapterPosition()).latitude);
+            intent.putExtra("shopLong",mMerchants.get(getAdapterPosition()).longitude);
+            intent.putExtra("shopTag", mMerchants.get(getAdapterPosition()).tag);
+            mContext.startActivity(intent);
+        }
     }
 @Override
     public void onBindViewHolder(@NonNull final DealsAdapter.MyViewHolder myViewHolder, final int i) {
@@ -88,6 +103,8 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
                 .apply(new RequestOptions()
                         .centerCrop())
                 .into(myViewHolder.shopImage);
+
+        myViewHolder.pointAddress.setText(mMerchants.get(i).getLocation());
 
 
 //    Location startPoint=new Location("locationA");
@@ -102,22 +119,6 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
 //    double distanceinKm = distance/1000;
 //
 //    Log.d(TAG, "onBindViewHolder: "+ distanceinKm);
-
-        myViewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ShopActivity.class);
-                intent.putExtra("id", mMerchants.get(i).getId());
-                intent.putExtra("shop_image", mMerchants.get(i).getShopPic());
-                intent.putExtra("shop_name", mMerchants.get(i).getShopName());
-                intent.putExtra("shop_address", mMerchants.get(i).getShopAddress());
-                intent.putExtra("shopMobileNumber", mMerchants.get(i).phoneNumber);
-                intent.putExtra("shopLat",mMerchants.get(i).latitude);
-                intent.putExtra("shopLong",mMerchants.get(i).longitude);
-                intent.putExtra("shopTag", mMerchants.get(i).tag);
-                mContext.startActivity(intent);
-            }
-        });
  }
 
 
