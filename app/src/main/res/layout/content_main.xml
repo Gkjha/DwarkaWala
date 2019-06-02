@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.edward.dwarkawala.MainActivity">
+
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/appBarID"
+        android:background="@color/White"
+        android:elevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+
+        <ImageButton
+            android:id="@+id/hamButtonID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ham_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.562" />
+
+
+        <ImageButton
+            android:id="@+id/optionsButtonID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/vert_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Dwarkawala"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.514"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.142" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayoutID"
+        android:layout_below="@+id/appBarID"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        app:tabMode="fixed"
+        android:elevation="5dp"
+        android:background="@color/White"
+        app:tabTextColor="#d3d3d3"
+        app:tabSelectedTextColor="@color/black"
+        app:tabIndicatorColor="@color/colorAccent" />
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPagerID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tabLayoutID"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    <FrameLayout
+        android:id="@+id/mainFrameId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_below="@id/appBarID"/>
+
+</RelativeLayout>
