@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -61,6 +62,7 @@ public class FeedsFragment extends Fragment {
     PostListAdapter postListAdapter;
     boolean isLoading = false;
     static int page = 1;
+    private NestedScrollView nestedScrollView;
     RecyclerView.LayoutManager mLayoutManager;
     private Parcelable mListState;
     Animation slide_down,slide_up;
@@ -91,6 +93,7 @@ public class FeedsFragment extends Fragment {
         noConnectionGif = (ImageView) view.findViewById(R.id.no_connectionImageID);
         networkState = new ConnectionDetector(mContext);
         swipeLayout = view.findViewById(R.id.swipeRefreshID);
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedScrollView);
 
         viewPager =  (ViewPager)view.findViewById(R.id.viewPager);
         viewPager.setPageTransformer(true,new DepthPageTransformer());
@@ -146,24 +149,47 @@ public class FeedsFragment extends Fragment {
         DownloadPosts();
 
 
-
-        // Load more images onScroll end
-        imageRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        //code to fetch more data for endless scrolling
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                            scrollY > oldScrollY) {
 
-                // Check if end of page has been reached
-                if( !isLoading && ((LinearLayoutManager)mLayoutManager).findLastVisibleItemPosition() == postListAdapter.getItemCount()-1 ){
-                    isLoading = true;
-                    Log.d(TAG , "End has reached, loading more images!");
-                    loadingLayout.startAnimation(slide_up);
-                    loadingLayout.setVisibility(View.VISIBLE);
-                    page++;
-                    DownloadPosts();
+//                         Check if end of page has been reached
+                        if( !isLoading && ((LinearLayoutManager)mLayoutManager).findLastVisibleItemPosition() == postListAdapter.getItemCount()-1 ){
+                            Log.d(TAG , "End has reached, loading more images!");
+                            isLoading = true;
+                            loadingLayout.startAnimation(slide_up);
+                            loadingLayout.setVisibility(View.VISIBLE);
+                            page++;
+                            DownloadPosts();
+                        }
+
+
+                    }
                 }
             }
         });
+
+        // Load more images onScroll end
+//        imageRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                // Check if end of page has been reached
+//                if( !isLoading && ((LinearLayoutManager)mLayoutManager).findLastVisibleItemPosition() == postListAdapter.getItemCount()-1 ){
+//                    isLoading = true;
+//                    Log.d(TAG , "End has reached, loading more images!");
+//                    loadingLayout.startAnimation(slide_up);
+//                    loadingLayout.setVisibility(View.VISIBLE);
+//                    page++;
+//                    DownloadPosts();
+//                }
+//            }
+//        });
 
 
     }

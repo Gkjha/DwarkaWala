@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.GoodieBag:Pinview:v1.3@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/afa3e468caca2db2d0a0c924a1485d2a/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/afa3e468caca2db2d0a0c924a1485d2a/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e95f3a496e13b2b168c9ccde2e241100/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e95f3a496e13b2b168c9ccde2e241100/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
