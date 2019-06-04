@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -24,6 +25,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.edward.dwarkawala.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.like.LikeButton;
 import com.like.OnAnimationEndListener;
 import com.like.OnLikeListener;
@@ -34,6 +40,7 @@ import java.util.List;
 import Adapters.ConnectionDetector;
 import Adapters.PostListAdapter;
 import Adapters.ViewPagerAdapter;
+import Models.Banners;
 import Models.Response;
 import Models.Thumbnail;
 import Retrofit.DwarkawalaApi;
@@ -61,6 +68,10 @@ public class FeedsFragment extends Fragment {
     SwipeRefreshLayout swipeLayout;
     ViewPager viewPager;
 
+    DatabaseReference banners;
+
+    FirebaseLoadDone firebaseLoadDone;
+
 
     @Nullable
     @Override
@@ -82,16 +93,18 @@ public class FeedsFragment extends Fragment {
         swipeLayout = view.findViewById(R.id.swipeRefreshID);
 
         viewPager =  (ViewPager)view.findViewById(R.id.viewPager);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity());
-        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setPageTransformer(true,new DepthPageTransformer());
+       // ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity());
+        //viewPager.setAdapter(viewPagerAdapter);
 
-
+        //Firebase for banners
+        banners = FirebaseDatabase.getInstance().getReference("Banners");
 
 
         generateRecyclerView();
 
 
-
+        loadBanner();
 
         // Adding Listener
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -167,6 +180,30 @@ public class FeedsFragment extends Fragment {
     }
 
 
+    public void loadBanner()
+    {
+        banners.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            List<Banners> bannersList = new ArrayList<>();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot bannersnapshot:dataSnapshot.getChildren()) {
+                    Banners bn = bannersnapshot.getValue(Banners.class);
+                    bannersList.add(bn);
+
+                    Log.d(TAG, "onDataChange: "+bn.getImage());
+                }
+                ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity(),bannersList);
+                viewPager.setAdapter(viewPagerAdapter);
+                Log.d(TAG, "onDataChange: "+bannersList.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    firebaseLoadDone.OnFirebaseFiled(databaseError.getMessage());
+            }
+        });
+    }
 
     public void DownloadPosts() {
 
@@ -201,5 +238,6 @@ public class FeedsFragment extends Fragment {
             }
         });
 }
+
 
 }
