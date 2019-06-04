@@ -96,7 +96,7 @@ public class MerchantActivity extends AppCompatActivity {
         merchantLogin = (CardView) findViewById(R.id.merchantLoginID);
         facebookLogin = (CardView) findViewById(R.id.facebookLoginID);
         googleLogin = (CardView) findViewById(R.id.googleLoginID);
-        pintrestLogin = (CardView) findViewById(R.id.emailLoginID);
+       // pintrestLogin = (CardView) findViewById(R.id.emailLoginID);
         contButton = (CardView) findViewById(R.id.continueID);
         infoText = (TextView) findViewById(R.id.infoTextID);
         createNewAccount = (TextView) findViewById(R.id.newAccountID);

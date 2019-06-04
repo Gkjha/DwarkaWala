@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeRefreshID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/White">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/White"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="210dp" />
+     </android.support.design.widget.CollapsingToolbarLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
 
 
     <RelativeLayout
 
         android:id="@+id/recyclerContainerID"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:layout_marginBottom="-207dp">
-
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/images_recycler_view"
@@ -73,12 +90,7 @@
 
 
         </RelativeLayout>
-
-
-
-
-
-        <RelativeLayout
+ <RelativeLayout
             android:id="@+id/loadingRecyclerID"
             android:layout_width="match_parent"
             android:layout_height="20sp"
@@ -100,7 +112,7 @@
                 android:layout_toStartOf="@+id/loadingTextID"
                 android:indeterminate="true"
                 android:indeterminateTintMode="src_atop"
-                android:indeterminateTint="@color/black"
+                android:indeterminateTint="@color/White"
                 android:layout_toLeftOf="@+id/loadingTextID" />
 
             <TextView
@@ -110,6 +122,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="Loading..."
+                android:textColor="@color/White"
                 android:textStyle="bold" />
 
 
@@ -119,4 +132,10 @@
 
 
     </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+
+

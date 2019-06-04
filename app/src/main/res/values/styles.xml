@@ -28,4 +28,30 @@
         </item>
     </style>
 
+    <style name="we_are_dwar">
+
+        <item name="android:textSize">
+            24sp
+        </item>
+
+        <item name="android:textColor">
+            #000000
+        </item>
+
+    </style>
+
+    <style name="follow_us_o">
+
+        <item name="android:textSize">
+            14sp
+        </item>
+
+        <item name="android:textColor">
+            #807979
+        </item>
+
+    </style>
+
+
+
 </resources>

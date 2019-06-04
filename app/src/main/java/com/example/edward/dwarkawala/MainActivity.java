@@ -6,7 +6,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.transition.FragmentTransitionSupport;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +23,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,11 +36,12 @@ import com.google.gson.Gson;
 
 import Adapters.HomePagerAdapter;
 import Fragments.BookmarkFragment;
+import Fragments.info;
 import Models.AccountData;
 
 import static com.example.edward.dwarkawala.CompleteAccount.ACCOUNT_DATA;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageButton hamNavigation,optionsButton;
     private HomePagerAdapter pagerAdapter;
     private FirebaseAuth mAuth;
-    public static FrameLayout mainFrame;
+    public FrameLayout mainFrame;
     private SharedPreferences preferences;
     public AccountData accountData = null;
     public  DrawerLayout drawer;
@@ -56,6 +62,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_Home:
+                        mainFrame.setVisibility(View.GONE);
+                        viewPager.setVisibility(View.VISIBLE);
+                        tabLayout.setVisibility(View.VISIBLE);
+                        //Toast.makeText(MainActivity.this, "home", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.nav_marks:
+                        viewPager.setVisibility(View.GONE);
+                        tabLayout.setVisibility(View.GONE);
+                        mainFrame.setVisibility(View.VISIBLE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFrameId,new BookmarkFragment()).commit();
+                        break;
+
+                    case R.id.nav_info:
+                        viewPager.setVisibility(View.GONE);
+                        tabLayout.setVisibility(View.GONE);
+                        mainFrame.setVisibility(View.VISIBLE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFrameId,new info()).commit();
+                        break;
+                }
+                return true;
+            }
+        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View decor = getWindow().getDecorView();
@@ -77,9 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.setupWithViewPager(viewPager);
         mainFrame = (FrameLayout) findViewById(R.id.mainFrameId);
         mAuth = FirebaseAuth.getInstance();
-        hamNavigation = (ImageButton) findViewById(R.id.hamButtonID);
-        optionsButton = (ImageButton) findViewById(R.id.optionsButtonID);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
 
@@ -110,24 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
 
 
-
-        hamNavigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if (drawer.isDrawerOpen(GravityCompat.START)) {
-                    drawer.closeDrawer(GravityCompat.START);
-                } else {
-                    drawer.openDrawer(GravityCompat.START);
-                }
-
-
-            }
-        });
-
-
-        optionsButton.setOnClickListener(new View.OnClickListener() {
+        /*optionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -175,30 +193,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 popupMenu.show();
 
             }
-        });
+        });*/
 
-
-
-//        Log.d(TAG,accountData.getName());
-//        Log.d(TAG,accountData.getEmail());
-//        Log.d(TAG,accountData.getLatitude());
-//        Log.d(TAG,accountData.getLongitude());
-//        Log.d(TAG,accountData.getPhoneNumber());
-//        Log.d(TAG,accountData.getPassword());
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -222,36 +220,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_Home) {
-
-            mainFrame.setVisibility(View.GONE);
-            viewPager.setVisibility(View.VISIBLE);
-            tabLayout.setVisibility(View.VISIBLE);
-
-
-        } else if (id == R.id.nav_fav) {
-
-        }else if (id == R.id.nav_marks) {
-
-            viewPager.setVisibility(View.GONE);
-            tabLayout.setVisibility(View.GONE);
-            mainFrame.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction().add(R.id.mainFrameId,new BookmarkFragment()).commit();
-
-        }  else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }
+

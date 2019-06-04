@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="310dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="false"
         android:layout_marginStart="3dp"
         android:layout_marginTop="3dp"
@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/imageThumbnailID"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="200dp"
                 android:background="@drawable/thumbnail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,22 +75,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/postTitleID"
                 app:layout_constraintVertical_bias="0.0" />
-
-            <com.like.LikeButton
-                android:id="@+id/heart_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                app:anim_scale_factor="10"
-                app:icon_size="7dp"
-                app:icon_type="heart"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.973"
-                app:layout_constraintStart_toEndOf="@+id/timeTextID"
-                app:layout_constraintTop_toBottomOf="@+id/postTitleID"
-                app:layout_constraintVertical_bias="0.395" />
 
 
         </android.support.constraint.ConstraintLayout>

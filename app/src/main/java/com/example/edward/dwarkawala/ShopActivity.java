@@ -62,6 +62,19 @@ public class ShopActivity extends AppCompatActivity {
         LocationButton = findViewById(R.id.locationButton);
         shopTag = findViewById(R.id.shopTag);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View decor = getWindow().getDecorView();
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            //if (shouldChangeStatusBarTintToDark) {
+//                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//            } else {
+//                // We want to change tint color to white again.
+//                // You can also record the flags in advance so that you can turn UI back completely if
+//                // you have set other flags before, such as translucent or full screen.
+//                decor.setSystemUiVisibility(0);
+//            }
+        }
+
         getIncomingIntent();
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +139,8 @@ public class ShopActivity extends AppCompatActivity {
         String shopId = getIntent().getStringExtra("id");
         Log.d(TAG, "makeBookmark: "+shopId);
         recyclerDatabaseReference.child(mAuth.getCurrentUser().getUid()).child(shopId).setValue(shopId);
+        Toast.makeText(ShopActivity.this, "Shop Bookmarked", Toast.LENGTH_SHORT).show();
+
 
     }
 

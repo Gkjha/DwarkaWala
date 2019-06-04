@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
         merchantLogin = (CardView) findViewById(R.id.merchantLoginID);
         facebookLogin = (CardView) findViewById(R.id.facebookLoginID);
         googleLogin = (CardView) findViewById(R.id.googleLoginID);
-        pintrestLogin = (CardView) findViewById(R.id.emailLoginID);
+       // pintrestLogin = (CardView) findViewById(R.id.emailLoginID);
         contButton = (CardView) findViewById(R.id.continueID);
         infoText = (TextView) findViewById(R.id.infoTextID);
         createNewAccount = (TextView) findViewById(R.id.newAccountID);
@@ -416,7 +416,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        pintrestLogin.setOnClickListener(new View.OnClickListener() {
+        /*pintrestLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -430,7 +430,7 @@ public class LoginActivity extends AppCompatActivity {
                 },500);
 
             }
-        });
+        });*/
 
 
 

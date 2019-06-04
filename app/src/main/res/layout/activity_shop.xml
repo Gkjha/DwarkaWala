@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeid"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,6 +50,14 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/shopPicId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        android:elevation="8dp"
+        android:layout_below="@id/appBarID">
     <ImageView
         android:id="@+id/shopImage"
         android:layout_width="match_parent"
@@ -56,6 +65,8 @@
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/avatars[5]"
         android:contentDescription="TODO" />
+
+    </android.support.v7.widget.CardView>
 
 
     <TextView
@@ -69,16 +80,8 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.142" />
+        android:layout_below="@id/shopPicId" />
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/shopTag"
@@ -89,30 +92,8 @@
             android:paddingLeft="8dp"
             android:text="@string/shoptag"
             android:textAppearance="@style/aggarwal_sw"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="3dp"
-            android:padding="3dp"
-            android:src="@drawable/shoptag_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/shopTag"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-    </android.support.constraint.ConstraintLayout>
+            android:textSize="14sp"
+            android:layout_below="@id/shopName"/>
 
     <TextView
         android:id="@+id/shopAddress"
@@ -126,7 +107,7 @@
         android:textAppearance="@style/aggarwal_sw"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_below="@id/shopTag" />
 
     <TextView
         android:id="@+id/shopFullAddress"
@@ -136,57 +117,54 @@
         android:paddingLeft="8dp"
         android:text="@string/shop_address"
         android:textAppearance="@style/greecolor"
-        android:textSize="17sp" />
+        android:textSize="14sp"
+        android:layout_below="@id/shopAddress"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/pinButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="70dp"
-            android:layout_height="68dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/bookmarkimage" />
-
-        <Button
-            android:id="@+id/CallButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="70dp"
-            android:layout_height="68dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/callimage" />
-
-        <Button
-            android:id="@+id/locationButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="70dp"
-            android:layout_height="68dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/location_icon" />
-
-    </LinearLayout>
-
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/imageid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shopFullAddress"
+        >
 
-        <TextView
-            android:id="@+id/textView13"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Offers coming Soon!"
-            android:textSize="36sp"
-            android:textColor="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+            android:layout_gravity="center_horizontal"
+            >
 
-</LinearLayout>
+            <Button
+                android:id="@+id/pinButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="68dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/bookmarkimage" />
+
+            <Button
+                android:id="@+id/CallButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="68dp"
+                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/callimage" />
+
+            <Button
+                android:id="@+id/locationButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="68dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/location_icon" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+
+</RelativeLayout>

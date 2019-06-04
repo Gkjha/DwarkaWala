@@ -82,4 +82,13 @@
     <string name="shop_intro">Shop intro</string>
     <string name="shop_address">Address:</string>
     <string name="shoptag">shopTag</string>
+
+    <string name="we_are_dwar">"We are Dwarka’s largest infotainment platform and Youth community."
+</string>
+
+    <string name="follow_us_o">
+
+Follow us on
+</string>
+
 </resources>

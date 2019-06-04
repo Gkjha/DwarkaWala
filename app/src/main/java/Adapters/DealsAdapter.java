@@ -107,6 +107,8 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
         myViewHolder.pointAddress.setText(mMerchants.get(i).getLocation());
 
 
+
+
 //    Location startPoint=new Location("locationA");
 //    startPoint.setLatitude(28.6354747);
 //    startPoint.setLongitude(77.0184355);
