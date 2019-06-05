@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/White">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
@@ -21,12 +22,24 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp" />
+                    android:layout_height="210dp"
+                    android:layout_margin="0dp" />
+
+                <LinearLayout
+                    android:id="@+id/sliderDots"
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp"
+                    android:layout_above="@id/images_recycler_view"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    tools:visibility="invisible">
+
+                </LinearLayout>
 
 
                 <android.support.v7.widget.RecyclerView
@@ -34,6 +47,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/viewPager"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="0dp"
                     android:nestedScrollingEnabled="false"
                     tools:visibility="visible" />
 
@@ -86,7 +102,7 @@
             android:layout_height="20sp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="@color/colorAccent"
+            android:background="@color/grey"
             android:visibility="gone">
 
 
@@ -118,9 +134,6 @@
 
 
     </RelativeLayout>
-
-
-
 </android.support.v4.widget.SwipeRefreshLayout>
 
 

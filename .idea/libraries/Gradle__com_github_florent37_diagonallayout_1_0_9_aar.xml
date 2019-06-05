@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.florent37:diagonallayout:1.0.9@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/791f6ea5daec275057f387bdc4560c02/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ab368a82b513e1ebfbc04917a6c91de3/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/791f6ea5daec275057f387bdc4560c02/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/791f6ea5daec275057f387bdc4560c02/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ab368a82b513e1ebfbc04917a6c91de3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ab368a82b513e1ebfbc04917a6c91de3/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
