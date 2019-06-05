@@ -1,6 +1,8 @@
 package Fragments;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +14,14 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.example.edward.dwarkawala.FullFeed;
@@ -72,14 +77,6 @@ public class DealsFragment extends Fragment {
         recyclerDatabaseReference = FirebaseDatabase.getInstance().getReference("Merchants");
 
 
-        // Set up RecyclerView
-        mLayoutManager = new GridLayoutManager(mContext,1);
-        imageListAdaper = new DealsAdapter(mContext);
-        imageRecyclerView.setLayoutManager(mLayoutManager);
-        imageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        imageRecyclerView.setAdapter(imageListAdaper);
-
-
 
         DownloadShops();
 
@@ -113,8 +110,7 @@ public class DealsFragment extends Fragment {
 
 
                 }
-
-                imageListAdaper.addAll(merchantDataList);
+                initRecycler();
 
             }
 
@@ -130,6 +126,20 @@ public class DealsFragment extends Fragment {
 
 
 
+
+    }
+
+
+
+
+    public void initRecycler(){
+
+        // Set up RecyclerView
+        imageListAdaper = new DealsAdapter(mContext,merchantDataList);
+        mLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+        imageRecyclerView.setLayoutManager(mLayoutManager);
+        imageRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        imageRecyclerView.setAdapter(imageListAdaper);
 
     }
 }

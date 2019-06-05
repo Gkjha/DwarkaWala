@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import Adapters.BookmarksAdapter;
 import Adapters.DealsAdapter;
 import Models.MerchantData;
 
@@ -39,7 +41,7 @@ public class BookmarkFragment extends Fragment {
     DatabaseReference recyclerDatabaseReference,dealsDatabase;
     FirebaseDatabase database;
     FirebaseAuth mAuth;
-    DealsAdapter imageListAdaper;
+    BookmarksAdapter imageListAdaper;
     Context mContext;
 
 
@@ -71,15 +73,6 @@ public class BookmarkFragment extends Fragment {
         dealsDatabase = FirebaseDatabase.getInstance().getReference("Merchants");
 
         imageRecyclerView = (RecyclerView) view.findViewById(R.id.mainRecyclerId);
-
-
-
-        // Set up RecyclerView
-        mLayoutManager = new GridLayoutManager(mContext,1);
-        imageListAdaper = new DealsAdapter(mContext);
-        imageRecyclerView.setLayoutManager(mLayoutManager);
-        imageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        imageRecyclerView.setAdapter(imageListAdaper);
 
         FetchIds();
     }
@@ -149,7 +142,7 @@ public class BookmarkFragment extends Fragment {
 
 
                 }
-                imageListAdaper.addAll(merchantDataList);
+                initRecycler();
 
             }
 
@@ -165,6 +158,18 @@ public class BookmarkFragment extends Fragment {
 
 
 
+
+    }
+
+
+    public void initRecycler(){
+
+        // Set up RecyclerView
+        imageListAdaper = new BookmarksAdapter(mContext,merchantDataList);
+        mLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+        imageRecyclerView.setLayoutManager(mLayoutManager);
+        imageRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        imageRecyclerView.setAdapter(imageListAdaper);
 
     }
 }

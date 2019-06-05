@@ -2,53 +2,41 @@ package Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.edward.dwarkawala.FullFeed;
-import com.example.edward.dwarkawala.ShopActivity;
 import com.example.edward.dwarkawala.R;
+import com.example.edward.dwarkawala.ShopActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.mikhaellopez.circularimageview.CircularImageView;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import Models.AccountData;
 import Models.MerchantData;
 
-public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolder> {
+public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.MyViewHolder> {
 
-    private static final String TAG = DealsAdapter.class.getSimpleName();
+    private static final String TAG = BookmarksAdapter.class.getSimpleName();
     public Context mContext;
-    public static List<MerchantData> mMerchants = new ArrayList<>();
+    public static List<MerchantData> mBookmarks = new ArrayList<>();
     public static List<AccountData> User;
     FirebaseAuth mAuth;
 
 
 
 
-    public DealsAdapter(Context mContext,List<MerchantData> mMerchants) {
+    public BookmarksAdapter(Context mContext,List<MerchantData> mBookmarks) {
         this.mContext = mContext;
-        this.mMerchants = mMerchants;
+        this.mBookmarks = mBookmarks;
         User = new ArrayList<>();
     }
 
@@ -76,35 +64,36 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
             ShopTag = itemView.findViewById(R.id.offersID);
             parentLayout = itemView.findViewById(R.id.parentLayout);
             pointAddress = itemView.findViewById(R.id.shopPointAddress);
-    }
+        }
 
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(mContext, ShopActivity.class);
-            intent.putExtra("id", mMerchants.get(getAdapterPosition()).getId());
-            intent.putExtra("shop_image", mMerchants.get(getAdapterPosition()).getShopPic());
-            intent.putExtra("shop_name", mMerchants.get(getAdapterPosition()).getShopName());
-            intent.putExtra("shop_address", mMerchants.get(getAdapterPosition()).getShopAddress());
-            intent.putExtra("shopMobileNumber", mMerchants.get(getAdapterPosition()).phoneNumber);
-            intent.putExtra("shopLat",mMerchants.get(getAdapterPosition()).latitude);
-            intent.putExtra("shopLong",mMerchants.get(getAdapterPosition()).longitude);
-            intent.putExtra("shopTag", mMerchants.get(getAdapterPosition()).tag);
+            intent.putExtra("id", mBookmarks.get(getAdapterPosition()).getId());
+            intent.putExtra("shop_image", mBookmarks.get(getAdapterPosition()).getShopPic());
+            intent.putExtra("shop_name", mBookmarks.get(getAdapterPosition()).getShopName());
+            intent.putExtra("shop_address", mBookmarks.get(getAdapterPosition()).getShopAddress());
+            intent.putExtra("shopMobileNumber", mBookmarks.get(getAdapterPosition()).phoneNumber);
+            intent.putExtra("shopLat", mBookmarks.get(getAdapterPosition()).latitude);
+            intent.putExtra("shopLong", mBookmarks.get(getAdapterPosition()).longitude);
+            intent.putExtra("shopTag", mBookmarks.get(getAdapterPosition()).tag);
             mContext.startActivity(intent);
         }
     }
-@Override
-    public void onBindViewHolder(@NonNull final DealsAdapter.MyViewHolder myViewHolder, final int i) {
+
+    @Override
+    public void onBindViewHolder(@NonNull final BookmarksAdapter.MyViewHolder myViewHolder, final int i) {
 
 
-        myViewHolder.shopName.setText(mMerchants.get(i).getShopName());
-        myViewHolder.ShopTag.setText(mMerchants.get(i).tag);
+        myViewHolder.shopName.setText(mBookmarks.get(i).getShopName());
+        myViewHolder.ShopTag.setText(mBookmarks.get(i).tag);
         Glide.with(mContext)
-                .load(mMerchants.get(i).getShopPic())
+                .load(mBookmarks.get(i).getShopPic())
                 .apply(new RequestOptions()
                         .centerCrop())
                 .into(myViewHolder.shopImage);
 
-        myViewHolder.pointAddress.setText(mMerchants.get(i).getLocation());
+        myViewHolder.pointAddress.setText(mBookmarks.get(i).getLocation());
 
 
 
@@ -121,12 +110,12 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
 //    double distanceinKm = distance/1000;
 //
 //    Log.d(TAG, "onBindViewHolder: "+ distanceinKm);
- }
+    }
 
 
     @Override
     public int getItemCount() {
-        return mMerchants.size();
+        return mBookmarks.size();
     }
 
     @Override
@@ -135,10 +124,10 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
     }
 
     public void clear() {
-        final int size = mMerchants.size();
+        final int size = mBookmarks.size();
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                mMerchants.remove(0);
+                mBookmarks.remove(0);
             }
 
             notifyItemRangeRemoved(0, size);
@@ -146,7 +135,7 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
     }
 
     public List<MerchantData> getItemList(){
-        return mMerchants;
+        return mBookmarks;
     }
 
 }
