@@ -63,7 +63,7 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView shopName, ShopTag;
-        CircularImageView shopImage;
+        ImageView shopImage;
         TextView pointAddress;
         RelativeLayout parentLayout;
 
@@ -71,7 +71,7 @@ public class DealsAdapter extends RecyclerView.Adapter <DealsAdapter.MyViewHolde
             super(itemView);
 
             itemView.setOnClickListener(this);
-            shopImage  = (CircularImageView) itemView.findViewById(R.id.shopImageID);
+            shopImage  = (ImageView) itemView.findViewById(R.id.shopImageID);
             shopName  =itemView.findViewById(R.id.shopNameID);
             ShopTag = itemView.findViewById(R.id.offersID);
             parentLayout = itemView.findViewById(R.id.parentLayout);

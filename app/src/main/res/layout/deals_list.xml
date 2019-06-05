@@ -12,11 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="3dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="1dp"
         android:padding="10dp"
+        android:paddingStart="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp"
         app:cardCornerRadius="0dp">
 
 
@@ -36,7 +40,7 @@
                 android:fontFamily="@font/montserrat"
                 android:text="ShopName"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,24 +65,34 @@
                 app:layout_constraintVertical_bias="0.0" />
 
 
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/shopImageID"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/account_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/offersID"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.666"
-                tools:ignore="MissingConstraints">
+                app:cardCornerRadius="10dp">
 
-            </com.mikhaellopez.circularimageview.CircularImageView>
+                <ImageView
+                    android:id="@+id/shopImageID"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/account_icon"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.666"
+                    tools:ignore="MissingConstraints">
+                </ImageView>
+
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:id="@+id/shopPointAddress"
@@ -93,8 +107,8 @@
                 android:textSize="8sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.017"
-                app:layout_constraintStart_toEndOf="@+id/shopImageID"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/offersID"
                 app:layout_constraintVertical_bias="0.0" />
 
