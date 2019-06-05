@@ -1,13 +1,16 @@
 package Fragments;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -36,6 +40,8 @@ import com.like.OnLikeListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Adapters.ConnectionDetector;
 import Adapters.PostListAdapter;
@@ -61,6 +67,7 @@ public class FeedsFragment extends Fragment {
     PostListAdapter postListAdapter;
     boolean isLoading = false;
     static int page = 1;
+    private NestedScrollView nestedScrollView;
     RecyclerView.LayoutManager mLayoutManager;
     private Parcelable mListState;
     Animation slide_down,slide_up;
@@ -68,9 +75,18 @@ public class FeedsFragment extends Fragment {
     SwipeRefreshLayout swipeLayout;
     ViewPager viewPager;
 
+    static List<Banners> bannersList;
+
     DatabaseReference banners;
 
     FirebaseLoadDone firebaseLoadDone;
+
+    //ImageSlider Dots
+    LinearLayout dotsSlider;
+    private int dotsCount;
+    private ImageView[] dotImages;
+
+    Context context;
 
 
     @Nullable
@@ -91,8 +107,17 @@ public class FeedsFragment extends Fragment {
         noConnectionGif = (ImageView) view.findViewById(R.id.no_connectionImageID);
         networkState = new ConnectionDetector(mContext);
         swipeLayout = view.findViewById(R.id.swipeRefreshID);
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedScrollView);
+
+
+        //dots slider
+        dotsSlider = (LinearLayout) view.findViewById(R.id.sliderDots);
+
+
+
 
         viewPager =  (ViewPager)view.findViewById(R.id.viewPager);
+
         viewPager.setPageTransformer(true,new DepthPageTransformer());
        // ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity());
         //viewPager.setAdapter(viewPagerAdapter);
@@ -146,26 +171,80 @@ public class FeedsFragment extends Fragment {
         DownloadPosts();
 
 
-
-        // Load more images onScroll end
-        imageRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        //code to fetch more data for endless scrolling
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                            scrollY > oldScrollY) {
 
-                // Check if end of page has been reached
-                if( !isLoading && ((LinearLayoutManager)mLayoutManager).findLastVisibleItemPosition() == postListAdapter.getItemCount()-1 ){
-                    isLoading = true;
-                    Log.d(TAG , "End has reached, loading more images!");
-                    loadingLayout.startAnimation(slide_up);
-                    loadingLayout.setVisibility(View.VISIBLE);
-                    page++;
-                    DownloadPosts();
+//                         Check if end of page has been reached
+                        if( !isLoading && ((LinearLayoutManager)mLayoutManager).findLastVisibleItemPosition() == postListAdapter.getItemCount()-1 ){
+                            Log.d(TAG , "End has reached, loading more images!");
+                            isLoading = true;
+                            loadingLayout.startAnimation(slide_up);
+                            loadingLayout.setVisibility(View.VISIBLE);
+                            page++;
+                            DownloadPosts();
+                        }
+
+
+                    }
                 }
             }
         });
 
+        // Load more images onScroll end
+//        imageRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                // Check if end of page has been reached
+//                if( !isLoading && ((LinearLayoutManager)mLayoutManager).findLastVisibleItemPosition() == postListAdapter.getItemCount()-1 ){
+//                    isLoading = true;
+//                    Log.d(TAG , "End has reached, loading more images!");
+//                    loadingLayout.startAnimation(slide_up);
+//                    loadingLayout.setVisibility(View.VISIBLE);
+//                    page++;
+//                    DownloadPosts();
+//                }
+//            }
+//        });
 
+        Timer myTimerTask = new Timer();
+        myTimerTask.scheduleAtFixedRate(new MyTimerTask(),4000,4000);
+
+
+    }
+
+    public class MyTimerTask extends TimerTask{
+
+        @Override
+        public void run() {
+            getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                        if (viewPager.getCurrentItem() == 0)
+                        {
+                            viewPager.setCurrentItem(1);
+                        }
+                        else if(viewPager.getCurrentItem()==1)
+                        {
+                            viewPager.setCurrentItem(2);
+                        }
+                        else if(viewPager.getCurrentItem()==2)
+                        {
+                            viewPager.setCurrentItem(0);
+                        }
+
+
+                }
+            });
+        }
     }
 
 
@@ -195,6 +274,43 @@ public class FeedsFragment extends Fragment {
                 }
                 ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity(),bannersList);
                 viewPager.setAdapter(viewPagerAdapter);
+                dotsCount = viewPagerAdapter.getCount();
+                dotImages = new ImageView[dotsCount];
+                for (int i=0; i<dotsCount; i++)
+                {
+                    dotImages[i] = new ImageView(getActivity());
+                    dotImages[i].setImageDrawable(getActivity().getDrawable(R.drawable.nonactive_dot));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
+                    ,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(8,8,8,8);
+                    dotsSlider.addView(dotImages[i], params);
+                }
+                dotImages[0].setImageDrawable(getActivity().getDrawable(R.drawable.active_dot));
+
+                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+
+                        for(int i = 0; i< dotsCount; i++){
+                            dotImages[i].setImageDrawable(getActivity().getDrawable( R.drawable.nonactive_dot));
+                        }
+
+                        dotImages[position].setImageDrawable(getActivity().getDrawable( R.drawable.active_dot));
+
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+
+
                 Log.d(TAG, "onDataChange: "+bannersList.size());
             }
 

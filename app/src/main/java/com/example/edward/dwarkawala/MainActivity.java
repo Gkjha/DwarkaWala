@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 
 import Adapters.HomePagerAdapter;
 import Fragments.BookmarkFragment;
+import Fragments.FeedsFragment;
 import Fragments.info;
 import Models.AccountData;
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
 
 
@@ -72,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.nav_Home:
                         mainFrame.setVisibility(View.GONE);
-                        viewPager.setVisibility(View.VISIBLE);
                         tabLayout.setVisibility(View.VISIBLE);
-                        //Toast.makeText(MainActivity.this, "home", Toast.LENGTH_SHORT).show();
+                        viewPager.setVisibility(View.VISIBLE);
+                       // getSupportFragmentManager().beginTransaction().replace(R.id.mainFrameId, new FeedsFragment()).commit();
                         break;
 
                     case R.id.nav_marks:
